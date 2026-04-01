@@ -1,10 +1,12 @@
-# Logistics ETA-PDE v3.0: Three-Stage Prediction with Multi-Route Selection
+# Towards a Physics-Informed Global Logistics Simulation: A Non-homogeneous Navier-Stokes Framework with Value-at-Risk (VaR) Constraints
 
 > **Physics-Informed ETA Prediction: Gaussian Merchant Shipping + Navier-Stokes Transport + Diffusion Last-Mile**
 
 ---
+## Abstract
+Traditional ETA models often fail during systemic shocks (e.g., Red Sea crisis) or stochastic "Inlet" irregularities (e.g., unpredictable merchant behavior). We propose a novel framework treating global logistics as a non-homogeneous fluid flow governed by the Navier-Stokes (N-S) equations. By integrating Jump Discontinuities (Holidays), Carrier-Specific Friction, and Category-Specific Rheology, we derive a probabilistic delivery distribution. The model outputs a Value-at-Risk (VaR) metric to define the Latest Delivery Time (LDT), providing a robust risk-aware commitment for supply chain stakeholders.
 
-## 📋 Overview
+## Overview
 
 This repository presents a novel physics-informed framework for global logistics ETA prediction that addresses a fundamental insight: **ETA prediction is not a single problem but three distinct physical regimes**:
 
@@ -26,7 +28,7 @@ T_total = T_merchant + T_transport + T_lastmile
 
 ---
 
-## 🚀 What's New in v3.0
+## 🚀 What's New 
 
 ### 1. Three-Stage Decomposition
 
@@ -62,7 +64,7 @@ Explicitly acknowledges current limitations:
 
 ---
 
-## 📊 Performance Comparison
+## 📊 Performance Comparison Simulation
 
 ### Comparison with Traditional ETA Models
 
