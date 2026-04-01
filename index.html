@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Non-homogeneous Navier-Stokes Framework for Global Logistics ETA</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            color: #333;
+            background: #fafafa;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #2c3e50;
+            margin-bottom: 40px;
+        }
+        header h1 {
+            font-size: 1.8em;
+            font-weight: normal;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        header .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            font-style: italic;
+        }
+        header .meta {
+            margin-top: 20px;
+            font-size: 0.95em;
+            color: #888;
+        }
+        
+        /* Abstract */
+        .abstract {
+            background: #f5f5f5;
+            padding: 30px;
+            border-left: 4px solid #2c3e50;
+            margin-bottom: 40px;
+        }
+        .abstract h2 {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .abstract p {
+            text-align: justify;
+            font-size: 1em;
+        }
+        .keywords {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+        }
+        .section h2 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .section h3 {
+            font-size: 1.15em;
+            color: #34495e;
+            margin: 25px 0 15px;
+        }
+        .section p {
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+        
+        /* Equations */
+        .equation {
+            background: #f8f9fa;
+            padding: 20px 25px;
+            margin: 20px 0;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1em;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        .equation-label {
+            text-align: right;
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+        }
+        .figure img {
+            max-width: 100%;
+            height: auto;
+        }
+        .figure-caption {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        tr:hover { background: #fafafa; }
+        
+        /* Lists */
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        
+        /* Code */
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 20px 0;
+        }
+        
+        /* Links */
+        a {
+            color: #2c3e50;
+            text-decoration: none;
+            border-bottom: 1px dotted #2c3e50;
+        }
+        a:hover {
+            border-bottom: 1px solid #2c3e50;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #2c3e50;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            font-size: 0.95em;
+            margin: 10px 10px 10px 0;
+        }
+        .btn:hover {
+            background: #34495e;
+            border: none;
+        }
+        
+        /* File list */
+        .file-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            margin: 20px 0;
+        }
+        .file-list h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .file-list ul {
+            margin-left: 20px;
+        }
+        .file-list li {
+            margin-bottom: 5px;
+        }
+        .file-list a {
+            border-bottom: none;
+            color: #3498db;
+        }
+        .file-list a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid #ddd;
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.4em; }
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>A Non-homogeneous Navier-Stokes Framework for Global Logistics ETA:<br>
+            Integrating Jump Discontinuities and Service-Category Specificity with Value-at-Risk</h1>
+            <div class="subtitle">基于非齐次纳维-斯托克斯算子与 VaR 的全球物流时效仿真模型</div>
+            <div class="meta">
+                Research Paper &nbsp;|&nbsp; 
+                <a href="paper/manuscript_v3.md">Full Paper</a> &nbsp;|&nbsp;
+                <a href="#implementation">Source Code</a>
+            </div>
+        </header>
+        
+        <!-- Abstract -->
+        <div class="abstract">
+            <h2>Abstract</h2>
+            <p>
+                We present a physics-informed framework for global logistics Estimated Time of Arrival (ETA) prediction 
+                <strong>by reformulating package flow dynamics through a non-homogeneous Navier-Stokes equation with jump discontinuities</strong>. 
+                Unlike traditional statistical or pure machine learning approaches, our model captures the physical essence of logistics networks: 
+                packages as fluid particles, transportation infrastructure as variable-diameter pipelines, and operational disruptions 
+                (holidays, customs delays) as shock waves in the flow field.
+            </p>
+            <p>
+                The key innovation lies in threefold: (1) A <strong>service-category dependent viscosity operator</strong> μ(𝒞, 𝒦) that encodes 
+                carrier quality and commodity sensitivity into fluid rheology; (2) A <strong>holiday jump term</strong> J<sub>holiday</sub> modeled 
+                as temporal discontinuities causing phase transitions from laminar to turbulent flow; (3) A <strong>Value-at-Risk (VaR) derived 
+                Latest Delivery Time (LDT)</strong> that quantifies tail risk in ETA distributions through the lens of systemic entropy increase.
+            </p>
+            <div class="keywords">
+                <strong>Keywords:</strong> Logistics ETA, Navier-Stokes Equation, Physics-Informed Machine Learning, 
+                Jump Discontinuities, Service-Category Viscosity, Value-at-Risk
+            </div>
+        </div>
+        
+        <!-- Overview -->
+        <div class="section">
+            <h2>1. Overview: The Physics of Logistics</h2>
+            
+            <p>
+                Global logistics networks represent one of humanity's most complex organized systems. Annually, over 100 billion packages 
+                traverse multimodal infrastructure spanning air, sea, rail, and road networks. Yet, the dominant paradigm for ETA prediction 
+                remains either statistical regression (ARIMA, Prophet) that captures historical patterns but fails during unprecedented disruptions, 
+                or black-box deep learning (LSTMs, Transformers) that learns correlations without understanding causal physical constraints.
+            </p>
+            
+            <h3>1.1 The Fluid Dynamics Analogy</h3>
+            
+            <p>
+                The analogy between package flow and fluid dynamics is mathematically rigorous when properly formulated. We map:
+            </p>
+            
+            <table>
+                <tr>
+                    <th>Physical Concept</th>
+                    <th>Logistics Mapping</th>
+                    <th>Mathematical Representation</th>
+                </tr>
+                <tr>
+                    <td>Fluid particle</td>
+                    <td>Individual package</td>
+                    <td>Mass point with trajectory <strong>x</strong>(t)</td>
+                </tr>
+                <tr>
+                    <td>Velocity field <strong>v</strong></td>
+                    <td>Package transit speed</td>
+                    <td><strong>v</strong> = d<strong>x</strong>/dt</td>
+                </tr>
+                <tr>
+                    <td>Pressure gradient ∇p</td>
+                    <td>Demand-supply imbalance</td>
+                    <td>p = p₀ + α(D-C)/C<sub>max</sub></td>
+                </tr>
+                <tr>
+                    <td>Viscosity μ</td>
+                    <td>Network friction</td>
+                    <td>μ(𝒞, 𝒦) = carrier × commodity</td>
+                </tr>
+                <tr>
+                    <td>Shock wave</td>
+                    <td>Holiday disruption</td>
+                    <td>Jump discontinuity J<sub>holiday</sub></td>
+                </tr>
+            </table>
+            
+            <div class="figure">
+                <img src="figures/fig1_analogy_framework.png" alt="Analogy Framework" style="max-width: 90%;">
+                <div class="figure-caption">
+                    Figure 1: The logistics-fluid dynamics analogy framework. Physical concepts (left) are mapped through 
+                    mathematical representations (center) to logistics systems (right).
+                </div>
+            </div>
+            
+            <h3>1.2 Core Innovation</h3>
+            
+            <p>
+                <strong>By reformulating package flow dynamics through a non-homogeneous Navier-Stokes equation with jump discontinuities</strong>, 
+                our model captures the physical constraints that govern real logistics networks. This approach provides:
+            </p>
+            
+            <ul>
+                <li><strong>Physical interpretability:</strong> Each term in the equation corresponds to a real logistics phenomenon</li>
+                <li><strong>Generalization power:</strong> Physical laws hold even under unprecedented disruptions</li>
+                <li><strong>Risk quantification:</strong> VaR-derived metrics provide actionable uncertainty bounds</li>
+            </ul>
+        </div>
+        
+        <!-- Mathematical Framework -->
+        <div class="section">
+            <h2>2. Mathematical Framework</h2>
+            
+            <h3>2.1 Governing Equation</h3>
+            
+            <p>We describe package flow dynamics through the following modified N-S equation:</p>
+            
+            <div class="equation">
+                ρ(∂<strong>v</strong>/∂t + <strong>v</strong>·∇<strong>v</strong>) = -∇p + μ(𝒞, 𝒦)∇²<strong>v</strong> + <strong>f</strong><sub>ext</sub> + S<sub>merchant</sub> + J<sub>holiday</sub>
+                <div class="equation-label">(1)</div>
+            </div>
+            
+            <p>where each term carries specific physical meaning:</p>
+            
+            <ul>
+                <li><strong>ρ(∂<strong>v</strong>/∂t + <strong>v</strong>·∇<strong>v</strong>)</strong>: Inertial terms (package flow momentum)</li>
+                <li><strong>-∇p</strong>: Pressure gradient (demand-supply imbalance)</li>
+                <li><strong>μ(𝒞, 𝒦)∇²<strong>v</strong></strong>: Viscous term (network friction)</li>
+                <li><strong><strong>f</strong><sub>ext</sub></strong>: External forces (weather, customs)</li>
+                <li><strong>S<sub>merchant</sub></strong>: Merchant source term (shipment injection)</li>
+                <li><strong>J<sub>holiday</sub></strong>: Holiday jump discontinuity</li>
+            </ul>
+            
+            <h3>2.2 Service-Category Viscosity μ(𝒞, 𝒦)</h3>
+            
+            <p>
+                Traditional N-S assumes constant viscosity. In logistics, "friction" varies dramatically by service provider and commodity type:
+            </p>
+            
+            <div class="equation">
+                μ(𝒞, 𝒦) = μ<sub>𝒞</sub> × μ<sub>𝒦</sub>
+                <div class="equation-label">(2)</div>
+            </div>
+            
+            <table>
+                <tr>
+                    <th>Commodity Type</th>
+                    <th>Rheological Model</th>
+                    <th>Viscosity Characteristics</th>
+                </tr>
+                <tr>
+                    <td>General cargo</td>
+                    <td>Newtonian</td>
+                    <td>Constant μ, predictable flow</td>
+                </tr>
+                <tr>
+                    <td>Fresh/Perishable</td>
+                    <td>Shear-thinning</td>
+                    <td>μ decreases with flow rate (priority handling)</td>
+                </tr>
+                <tr>
+                    <td>Fragile/High-value</td>
+                    <td>Bingham plastic</td>
+                    <td>Yield stress required (special handling)</td>
+                </tr>
+                <tr>
+                    <td>Hazardous</td>
+                    <td>Shear-thickening</td>
+                    <td>μ increases under stress (regulatory friction)</td>
+                </tr>
+            </table>
+            
+            <h3>2.3 Holiday Jump Discontinuity</h3>
+            
+            <p>
+                The most innovative aspect of our framework is the treatment of holidays as <strong>temporal discontinuities</strong> 
+                satisfying Rankine-Hugoniot conditions:
+            </p>
+            
+            <div class="equation">
+                J<sub>holiday</sub>(t) = 
+                ⎧ 0                          t < t<sub>pre</sub><br>
+                ⎨ J<sub>surge</sub>·δ(t-t<sub>pre</sub>)         t = t<sub>pre</sub>  (Pre-holiday surge)<br>
+                ⎩ -λ<strong>v</strong>                       t<sub>start</sub> ≤ t ≤ t<sub>end</sub>  (Holiday shutdown)
+                <div class="equation-label">(3)</div>
+            </div>
+            
+            <div class="figure">
+                <img src="figures/fig2_holiday_jump.png" alt="Holiday Jump" style="max-width: 90%;">
+                <div class="figure-caption">
+                    Figure 2: Holiday jump discontinuity. The four-phase dynamics show capacity contraction 
+                    during holidays causing velocity discontinuities.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Risk Quantification -->
+        <div class="section">
+            <h2>3. Risk Quantification: VaR and LDT</h2>
+            
+            <p>
+                Due to stochastic merchant behavior, weather, and holiday jumps, ETA is not a point estimate but a 
+                <strong>probability distribution</strong> P(T | 𝒞, 𝒦, J).
+            </p>
+            
+            <h3>3.1 Value-at-Risk for Logistics</h3>
+            
+            <div class="equation">
+                LDT<sub>α</sub> = VaR<sub>α</sub>(T | 𝒞, 𝒦, J) = inf{t : P(T ≤ t) ≥ α}
+                <div class="equation-label">(4)</div>
+            </div>
+            
+            <p>
+                The <strong>entropy gap</strong> Gap<sub>α</sub> = LDT<sub>α</sub> - E[T] measures systemic uncertainty. 
+                During high-viscosity (cross-border) or strong-jump (holiday) periods:
+            </p>
+            
+            <div class="equation">
+                Gap<sub>α</sub><sup>holiday</sup> / Gap<sub>α</sub><sup>normal</sup> ≈ 5-8×
+                <div class="equation-label">(5)</div>
+            </div>
+            
+            <div class="figure">
+                <img src="figures/fig3_var_entropy.png" alt="VaR and Entropy" style="max-width: 90%;">
+                <div class="figure-caption">
+                    Figure 3: (a) ETA distribution by period showing heavy right tail during holidays. 
+                    (b) System entropy gap expanding 5.8× during holiday period.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Algorithm -->
+        <div class="section">
+            <h2>4. Algorithm: Physics-Informed Neural Operator</h2>
+            
+            <p>
+                We propose a Hybrid PINO (Physics-Informed Neural Operator) architecture that enforces physical constraints 
+                while learning from empirical data.
+            </p>
+            
+            <div class="figure">
+                <img src="figures/fig4_pino_architecture.png" alt="PINO Architecture" style="max-width: 95%;">
+                <div class="figure-caption">
+                    Figure 4: Hybrid Physics-Informed Neural Operator architecture. The total loss combines 
+                    data fidelity, PDE residual, and jump condition constraints.
+                </div>
+            </div>
+            
+            <h3>4.1 Loss Function</h3>
+            
+            <div class="equation">
+                ℒ<sub>total</sub> = ℒ<sub>data</sub> + λ<sub>pde</sub>·ℒ<sub>pde</sub> + λ<sub>jump</sub>·ℒ<sub>jump</sub>
+                <div class="equation-label">(6)</div>
+            </div>
+            
+            <ul>
+                <li><strong>ℒ<sub>data</sub></strong>: Pinball loss for quantile regression</li>
+                <li><strong>ℒ<sub>pde</sub></strong>: Momentum conservation residual</li>
+                <li><strong>ℒ<sub>jump</sub></strong>: Holiday discontinuity constraint</li>
+            </ul>
+        </div>
+        
+        <!-- Simulation Demo -->
+        <div class="section">
+            <h2>5. Simulation Demo</h2>
+            
+            <h3>5.1 Scenario: Spring Festival Cross-border Fresh Produce</h3>
+            
+            <p>
+                <strong>Route:</strong> Guangzhou (CN) → Los Angeles (US) via Hong Kong hub<br>
+                <strong>Commodity:</strong> Fresh durian (high perishability, temperature-controlled)<br>
+                <strong>Period:</strong> January 15 - February 15 (Spring Festival)
+            </p>
+            
+            <table>
+                <tr>
+                    <th>Period</th>
+                    <th>Mean ETA</th>
+                    <th>LDT<sub>0.95</sub></th>
+                    <th>Gap<sub>0.95</sub></th>
+                    <th>Risk Expansion</th>
+                </tr>
+                <tr>
+                    <td>Normal</td>
+                    <td>4.5 days</td>
+                    <td>5.8 days</td>
+                    <td>1.3 days</td>
+                    <td>1.0× (baseline)</td>
+                </tr>
+                <tr>
+                    <td>Pre-holiday</td>
+                    <td>5.2 days</td>
+                    <td>7.1 days</td>
+                    <td>1.9 days</td>
+                    <td>1.5×</td>
+                </tr>
+                <tr style="background: #fff3cd;">
+                    <td><strong>Holiday</strong></td>
+                    <td><strong>8.7 days</strong></td>
+                    <td><strong>16.2 days</strong></td>
+                    <td><strong>7.5 days</strong></td>
+                    <td><strong>5.8×</strong></td>
+                </tr>
+                <tr>
+                    <td>Recovery</td>
+                    <td>6.3 days</td>
+                    <td>10.4 days</td>
+                    <td>4.1 days</td>
+                    <td>3.2×</td>
+                </tr>
+            </table>
+            
+            <div class="figure">
+                <img src="figures/fig5_simulation_results.png" alt="Simulation Results" style="max-width: 95%;">
+                <div class="figure-caption">
+                    Figure 5: Comprehensive simulation results showing velocity prediction, model comparison, 
+                    category-specific viscosity, and domestic vs. cross-border analysis.
+                </div>
+            </div>
+            
+            <h3>5.2 Key Insights</h3>
+            
+            <ul>
+                <li>The VaR-ETA gap expands by <strong>5.8×</strong> during the holiday period</li>
+                <li>For fresh produce with 14-day shelf life, the 0.99 LDT (19.8 days) exceeds acceptable limits</li>
+                <li>Model automatically recommends 7-10 day buffer for holiday shipments</li>
+            </ul>
+        </div>
+        
+        <!-- Implementation -->
+        <div class="section" id="implementation">
+            <h2>6. Implementation</h2>
+            
+            <p>
+                The framework is implemented in Python with PyTorch for the neural operator components.
+            </p>
+            
+            <div class="file-list">
+                <h4>📁 Source Code Files</h4>
+                <ul>
+                    <li><a href="src/logistics_ns_solver.py"><code>logistics_ns_solver.py</code></a> — Core N-S equation solver</li>
+                    <li><a href="src/logistics_ns_solver_v2.py"><code>logistics_ns_solver_v2.py</code></a> — Non-dimensionalized version</li>
+                    <li><a href="src/three_stage_model.py"><code>three_stage_model.py</code></a> — Three-stage decomposition</li>
+                    <li><a href="src/pino_model.py"><code>pino_model.py</code></a> — Physics-Informed Neural Operator</li>
+                    <li><a href="src/visualization.py"><code>visualization.py</code></a> — Plotting tools</li>
+                </ul>
+            </div>
+            
+            <div class="file-list">
+                <h4>📄 Paper & Documentation</h4>
+                <ul>
+                    <li><a href="paper/manuscript_v3.md"><code>manuscript_v3.md</code></a> — Full paper (latest version)</li>
+                    <li><a href="README.md"><code>README.md</code></a> — Project documentation</li>
+                    <li><a href="requirements.txt"><code>requirements.txt</code></a> — Python dependencies</li>
+                </ul>
+            </div>
+            
+            <h3>6.1 Quick Start</h3>
+            
+            <div class="code-block">
+# Core N-S Solver Example
+from src.logistics_ns_solver import LogisticsNSEquation, VaRCalculator
+import numpy as np
+
+# Initialize N-S equation
+ns = LogisticsNSEquation(rho=1.0, mu_base=0.1)
+
+# Configure carrier and commodity
+carrier_params = {'gamma': 0.8, 'delta': 0.9, 'R': 0.95}
+commodity_params = {'K': 2.0, 'n': 0.7}
+
+# Compute viscosity
+mu = ns.combined_viscosity(carrier_params, commodity_params, shear_rate=1.0)
+print(f"Viscosity: {mu:.4f}")
+
+# Compute VaR
+var_calc = VaRCalibrator()
+eta_samples = np.random.normal(5.0, 1.5, 1000)
+ldt_95 = var_calc.compute_var(eta_samples, alpha=0.95)
+print(f"LDT₀.₉₅: {ldt_95:.2f} days")
+            </div>
+            
+            <h3>6.2 Three-Stage Prediction</h3>
+            
+            <div class="code-block">
+from src.three_stage_model import ThreeStageETAModel, MerchantProfile
+
+# Initialize model
+model = ThreeStageETAModel()
+
+# Register merchant
+merchant = MerchantProfile(
+    merchant_id='M001',
+    tier='A',
+    mu_base=9,      # hours
+    sigma_base=3,   # hours
+    category='electronics'
+)
+model.merchant_model.register_merchant(merchant)
+
+# Predict ETA
+result = model.predict_eta(
+    origin='Guangzhou',
+    destination='LosAngeles',
+    merchant_id='M001',
+    order_time=0
+)
+
+print(f"ETA: {result['eta_mean']:.2f} days")
+print(f"LDT₉₅: {result['ldt_95']:.2f} days")
+            </div>
+            
+            <p style="text-align: center; margin-top: 30px;">
+                <a href="src/" class="btn">Browse All Source Files</a>
+                <a href="paper/manuscript_v3.md" class="btn">Read Full Paper</a>
+            </p>
+        </div>
+        
+        <!-- Conclusion -->
+        <div class="section">
+            <h2>7. Conclusion</h2>
+            
+            <p>
+                <strong>By reformulating package flow dynamics through a non-homogeneous Navier-Stokes equation with jump discontinuities</strong>, 
+                our model captures the physical constraints that govern real logistics networks. The key innovations—service-category dependent 
+                viscosity, Rankine-Hugoniot holiday jumps, and VaR-derived Latest Delivery Time—provide a rigorous foundation for 
+                risk-aware ETA prediction.
+            </p>
+            
+            <p>
+                The VaR-ETA gap expansion (5.8× during holidays) directly quantifies systemic resilience costs, enabling proactive 
+                risk mitigation. As global supply chains face increasing volatility, physics-informed approaches offer a robust 
+                foundation for resilient logistics.
+            </p>
+        </div>
+        
+        <footer>
+            <p>
+                <a href="paper/manuscript_v3.md">Full Paper</a> &nbsp;|&nbsp;
+                <a href="src/">Source Code</a> &nbsp;|&nbsp;
+                <a href="figures/">Figures</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85em; color: #aaa;">
+                Research Paper &nbsp;|&nbsp; © 2026
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
