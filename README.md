@@ -294,16 +294,11 @@ We explicitly acknowledge the following limitations:
 
 ## 📚 Citation
 
-```bibtex
-@article{logistics_eta_pde_2026,
-  title={A Non-homogeneous Navier-Stokes Framework for Global Logistics ETA: 
-         Integrating Jump Discontinuities, Service-Category Specificity, 
-         and Multi-Route Selection with Value-at-Risk},
-  author={Research Team},
-  journal={arXiv preprint},
-  year={2026}
-}
-```
+Allaire, G. (1991). Homogenization of the Navier-Stokes equations in open sets perforated with tiny holes I. Abstract framework, a volume distribution of holes. Archive for Rational Mechanics and Analysis, 113(3), 209-259.
+
+Amisano, G., & Giannini, C. (2012). Topics in structural VAR econometrics. Springer Science & Business Media.
+
+Lauterbach, B., & Schultz, P. (1990). Pricing warrants: an empirical study of the Black‐Scholes model and its alternatives. The Journal of Finance, 45(4), 1181-1209.
 
 ---
 
